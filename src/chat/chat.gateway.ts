@@ -17,10 +17,23 @@ export class ChatGateway implements OnModuleInit {
         socket.disconnect();
       }
       console.log(`socket connected: ${name} ${token} ${socket.id}`);
+
+      // Add client to the connected clients list
+      this.chatService.onClientConnected({
+        id: socket.id,
+        name,
+      });
+
+      // Send list of connected clients to the new client
+      this.server.emit('clients', this.chatService.getClients());
       
       // Client disconnected
       socket.on('disconnect', () => {
         console.log('socket disconnected');
+        this.chatService.onClientDisconnected(socket.id);
+
+        // Send list of connected clients to the new client
+        this.server.emit('clients', this.chatService.getClients());
       });
     });
   }
