@@ -46,7 +46,7 @@ socket.on('clients', (clients) => {
 
 socket.on('message', (data) => {
     const msgBox = document.createElement('div');
-    msgBox.innerHTML = `${data.name}: ${data.message}`;
+    msgBox.innerHTML = `<p>${data.message}</p><small>${data.name}</small>`;
     if(data.name === username) {
         msgBox.classList.add('message');
     } else {
